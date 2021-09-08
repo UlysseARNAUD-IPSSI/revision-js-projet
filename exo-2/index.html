@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Convertisseur de température</title>
+
+    <link rel="stylesheet" href="../assets/normalize.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<main aria-labelledby="header">
+    <header>
+        <h1 id="header">
+            <p><span>Convertisseur de</span></p>
+            <p><span>température</span></p>
+        </h1>
+    </header>
+
+    <section aria-label="Formulaire">
+        <section
+                aria-label="Température de départ"
+                onclick="this.querySelector(`input[name='value']`).focus()">
+
+            <form name="from-temperature" onsubmit="event.preventDefault();return false;">
+
+                <label>
+                    <input
+                            type="number" name="value" placeholder="10"
+                            onkeyup="onChangeTemperature()"
+                            onchange="onChangeTemperature()">
+                    <select name="type" onclick="event.preventDefault(),event.stopPropagation()" onchange="onChangeTemperature()">
+                        <option value="Celsius" selected>°C</option>
+                        <option value="Fahrenheit">°F</option>
+                        <option value="Kelvin">°K</option>
+                        <option value="Rankine">°R</option>
+                    </select>
+                </label>
+
+            </form>
+
+        </section>
+        <section
+                aria-label="Température d'arrivée"
+                onclick="let element;event.preventDefault(),(element = this.querySelector(`input[name='value']`)).focus(),element.select()">
+
+            <form name="to-temperature">
+
+                <label>
+                    <input type="number" name="value" placeholder="50" readonly>
+                    <select name="type" onclick="event.preventDefault(),event.stopPropagation()" onchange="onChangeTemperature()">
+                        <option value="Celsius">°C</option>
+                        <option value="Fahrenheit" selected>°F</option>
+                        <option value="Kelvin">°K</option>
+                        <option value="Rankine">°R</option>
+                    </select>
+                </label>
+
+            </form>
+
+        </section>
+        <aside aria-label="Basculer les températures">
+            <button type="button" onclick="event.preventDefault(),switchTemperature()">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                </svg>
+            </button>
+        </aside>
+    </section>
+</main>
+
+<script src="main.js"></script>
+<script>
+    const from = _getValues('from-temperature')
+    const to = _getValues('to-temperature')
+
+    function _getValues(name) {
+        let form = document.querySelector(`form[name="${name}"]`)
+        return {
+            value: form.querySelector('input[name="value"]'),
+            type: form.querySelector('select[name="type"]'),
+        }
+    }
+
+    function onChangeTemperature() {
+
+        let {value: fromValue} = from.value
+        const {value: fromType} = from.type
+        const {value: toType} = to.type
+
+        fromValue = fromValue.trim()
+
+        if (!fromValue) {
+            to.value.value = null
+            return
+        }
+
+        to.value.value = +convert({
+            from: {
+                type: fromType,
+                value: fromValue
+            },
+            to: {
+                type: toType
+            }
+        })
+    }
+
+    function switchTemperature() {
+        const temp = {
+            value: {
+                value: to.value.value
+            },
+            type: {
+                options: to.type.options,
+                selectedIndex: to.type.selectedIndex
+            }
+        }
+        Object.freeze(temp)
+
+        to.value.value = +from.value.value
+        to.type.getElementsByTagName('option')[from.type.selectedIndex].selected = true
+        from.value.value = +temp.value.value
+        from.type.getElementsByTagName('option')[temp.type.selectedIndex].selected = true
+    }
+
+
+</script>
+
+</body>
+</html>

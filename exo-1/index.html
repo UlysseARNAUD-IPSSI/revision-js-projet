@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Générateur de mot de passe sécurisé</title>
+
+    <link rel="stylesheet" href="../assets/normalize.css">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<main>
+
+    <header>
+        <h1>
+            <p><span>Générateur&nbsp;de</span></p>
+            <p><span>mot&nbsp;de&nbsp;passe</span></p>
+            <p><span>sécurisé</span></p>
+        </h1>
+    </header>
+
+    <section>
+
+        <form name="password-generator">
+            <label>
+                <span onclick="this.nextElementSibling.focus();this.nextElementSibling.select()">Mot de passe</span>
+                <input type="text" name="password" value="Bonjour !" readonly>
+            </label>
+            <div>
+                <fieldset>
+                    <legend>Options</legend>
+                    <label>
+                        <span>Taille :</span>
+                        <input type="range" min="4" max="256" value="24" name="size"
+                               oninput="this.nextElementSibling.children[0].innerHTML = this.value"
+                               onchange="this.nextElementSibling.children[0].innerHTML = this.value">
+                        <p><span>24</span> caractère(s)</p>
+                    </label>
+                </fieldset>
+                <fieldset>
+                    <legend>Alphabet</legend>
+                    <label>
+                        <input type="checkbox" name="alphabets[lowercase]" onchange="this.value = this.checked" checked>
+                        <span>Lettres minuscules</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="alphabets[numbers]" onchange="this.value = this.checked" checked>
+                        <span>Nombres</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="alphabets[specials]" onchange="this.value = this.checked" checked>
+                        <span>Caractères spéciaux</span>
+                    </label>
+                </fieldset>
+            </div>
+        </form>
+
+    </section>
+
+</main>
+
+<script src="main.js"></script>
+<script>
+    /*
+     * On crée un "MutationObserver" afin de rafraichir le mot de passe
+     * à chaque fois qu'on va modifier un paramètre dans le formulaire.
+     * Le code source ayant permis cela, ainsi que la plupart des commentaires, provien(nen)t de MDN.
+     * Source: https://developer.mozilla.org/fr/docs/Web/API/MutationObserver#exemple_d%E2%80%99utilisation
+     */
+
+    // Selectionne le noeud dont les mutations seront observées
+    const targetNode = document.forms.namedItem('password-generator')
+
+
+    const inputPassword = targetNode.querySelector('input[name="password"]')
+
+    // Options de l'observateur (quelles sont les mutations à observer)
+    const config = { attributes: true, childList: true, subtree: true }
+
+    // Fonction callback à éxécuter quand une mutation est observée
+    const callback = function(mutationsList) {
+        for(let mutation of mutationsList) {
+            if (['childList','attributes'].includes(mutation.type)) {
+                const formData = new FormData(targetNode)
+                const alphabets = {
+                    lowercase: !!formData.get('alphabets[lowercase]'),
+                    numbers: !!formData.get('alphabets[numbers]'),
+                    specials: !!formData.get('alphabets[specials]'),
+                }
+                const size = formData.get('size')
+
+                const newPassword = password(size, {...alphabets})
+
+                // On désactive l'observation le temps de mettre à jour le mot de passe
+                observer.disconnect()
+
+                inputPassword.value = newPassword
+
+                // On peut reprendre l'observation
+                observer.observe(targetNode, config)
+            }
+        }
+    };
+
+    // Créé une instance de l'observateur lié à la fonction de callback
+    const observer = new MutationObserver(callback)
+
+    // Commence à observer le noeud cible pour les mutations précédemment configurées
+    observer.observe(targetNode, config)
+
+    // L'observation peut être arrêtée par la suite
+    //observer.disconnect()
+</script>
+
+</body>
+</html>

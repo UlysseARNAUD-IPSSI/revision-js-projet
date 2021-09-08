@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Générateur de citations</title>
+
+    <link rel="stylesheet" href="../assets/normalize.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main aria-labelledby="header">
+    <header>
+        <h1 id="header">
+            <p><span>Générateur de</span></p>
+            <p><span>citations</span></p>
+        </h1>
+    </header>
+    <section>
+        <button type="button" onclick="document.body.insertBefore(Modal(datas[Math.floor(Math.random() * datas.length)]), document.querySelector('main'))">
+            Ouvrir une boîte de dialogue
+        </button>
+    </section>
+</main>
+
+<script src="main.js"></script>
+
+</body>
+</html>

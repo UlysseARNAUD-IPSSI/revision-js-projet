@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mode sombre</title>
+
+    <link rel="stylesheet" href="../assets/normalize.css">
+    <style>
+        body.dark {
+            --text-color: white;
+            --background-color: #1d1d1d;
+            --theme-primary: var(--alt-primary);
+            --theme-secondary: var(--alt-secondary);
+        }
+
+        main {
+             padding-left: 5%;
+             padding-right: 5%;
+         }
+
+        h1 {
+            font-size: 1.8rem!important;
+        }
+
+    </style>
+</head>
+<body>
+
+<main aria-labelledby="header">
+    <header>
+        <h1 id="header">
+            <p><span>Mode sombre</span></p>
+        </h1>
+    </header>
+    <section>
+        <button type="button" onclick="document.body.classList.toggle('dark')">
+            Basculer entre le mode sombre et clair
+        </button>
+    </section>
+</main>
+
+</body>
+</html>

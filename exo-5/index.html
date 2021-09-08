@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Menu Burger</title>
+
+    <link rel="stylesheet" href="../assets/normalize.css">
+    <style>
+
+        nav {
+            position: sticky;
+            top: .75em;
+            left: 1em;
+            z-index: 1000;
+        }
+
+        nav > button {
+            position: relative;
+            display: grid;
+            place-content: center;
+            transform: translate(-50%, 50%);
+            transition: 500ms ease;
+            user-select: none;
+            z-index: 1100
+        }
+
+        nav > button > svg {
+            height: 2rem;
+            width: 2rem;
+        }
+
+        nav > ul {
+            padding: 2.5em .5em 1em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: .75em;
+            margin: 0;
+            background: gainsboro;
+            transform: translateX(-100%);
+            transition: 500ms ease;
+            opacity: 0;
+        }
+
+        nav[open] > ul {
+            transform: translateX(0);
+            opacity: 1;
+            list-style: none;
+        }
+
+        nav > ul > li {
+            padding: 1.25em 1.75em;
+            border: 2px solid black;
+            border-radius: .5em;
+            line-height: 1;
+            margin: 0;
+            display: grid;
+            place-content: center;
+            width: 5em;
+            font-weight: bold;
+            cursor: pointer
+        }
+
+        nav > ul > li > a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        nav > ul > li:where(:hover,:focus,:active) > a {
+            text-decoration: underline;
+        }
+
+        main {
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        h1 {
+            font-size: 1.8rem!important;
+        }
+
+    </style>
+</head>
+<body>
+
+<main aria-labelledby="header">
+    <header>
+        <h1 id="header">
+            <p><span>Mode Burger</span></p>
+        </h1>
+    </header>
+    <section>
+
+        <nav>
+            <button type="button" onclick="this.closest('nav').toggleAttribute('open')">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <ul>
+                <li>
+                    <a href="#">First</a>
+                </li>
+                <li>
+                    <a href="#">Second</a>
+                </li>
+                <li>
+                    <a href="#">Third</a>
+                </li>
+                <li>
+                    <a href="#">Fourth</a>
+                </li>
+                <li>
+                    <a href="#">Fifth</a>
+                </li>
+            </ul>
+        </nav>
+
+    </section>
+</main>
+
+</body>
+</html>
